@@ -1,0 +1,43 @@
+------======[[       OPTIONAL       ]]======------
+
+For this challenge, making use of the rarun2 debug profile is optional, however good practice if you'd like to see the program's output while debugging.
+
+Simply open a secondary terminal window and use `tty` to get its pts/pty number, and replace the one in the `hello2.rr2` file.  After that, run `clear; sleep 99999999999;` in that secondary terminal, and finally run `r2 -d rarun2 -R ./hello2.rr2` in your primary terminal.  
+Now radare's input/output is tied to your primary terminal, and the debugged program's input/output are tied to the secondary terminal.
+
+------======[[BEFORE RUNNING RADARE2]]======------
+
+1) Use `cat hello2.c` to view the source code of the binary.
+2) Notice in the source code that we've defined a global string "something" before main, as well as another string within main, "hello".  The difference may seem minor, however when the program is mapped to memory, these two strings are placed in very different memory addresses!
+3) Finally, we'll see how the string pointer (a memory address) is passed as the argument to the secondary function, "print_something()"
+
+------======[[      WALKTHROUGH     ]]======------
+
+1) Use `r2 -d ./hello2` to open the binary with radare2 (or using rarun2 as explained above).
+2) Use `aaa` to analyze all functions and references.
+3) Use `db main` to set a breakpoint on main.
+4) Use `dc` to continue to the breakpoint.
+5) Use `V` to enter visual mode.
+6) Use `pp` to cycle display modes until debug mode.
+7) Use `sss` to single-step until `rip` == 0x400573.
+
+8) Answer Question 1.
+
+9) Use `ssss` while keeping your eye on the stack view to watch the string get moved onto the stack.
+
+10) Answer Questions 2 and 3.
+
+11) Use `:db sym.print_something` to set a breakpoint on the print_something function.
+12) Use `:dc` to continue execution until the call. Use <enter> to exit command mode.
+13) Use `sss` to step through the function prologue, watching the stack pointer, rbp, and rsp change with each step.
+14) The next 3 instructions might be confusing: `rdi` is moved onto the stack @ 0x40054e, then loaded back into rax @ 0x400552, then back into `rdi` @ 0x400556.
+
+15) Try to answer question 4 (might not be intuitive).
+
+16) Use `sssS` to step over the puts until `rip` == 0x40055e. (if you accidentally step into puts, use `dcr` to keep continuing until returns, or use `:db 0x0040055e; dc;` to break and continue until reaching this instruction).
+
+17) Use `pxq 16 @ str.Something_Else_` to inspect the address and data of the string.
+
+18) Answer question 5.
+
+19) Use `:dc` to continue and finish program execution.

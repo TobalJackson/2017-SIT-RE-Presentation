@@ -1,0 +1,15 @@
+Q1)	What memory address is the main function located at?
+A1) 0x400___
+
+Q2) Which value is pushed onto main's stack frame after the instruction at 0x400546 is executed? (Hint: look at where the stack pointer [`rsp`] is pointing)
+A2) 
+
+Q3) How many bytes were subtracted from the stack pointer (rsp) when the above `push` instruction was executed? (Hint: use `:dro` to see old register values, and `:dro~rsp` to filter output for lines containing `rsp`)
+A3) _ bytes
+
+Q4) After the instruction @ 0x400547 executes, how big is the stack? (Hint: subtract `rsp` from `rbp`.  Use `:? rbp-rsp` to perform math!)
+A4) _ bytes
+
+Q5) As can be seen at address 0x40054a of main, `str.Hello__world_` is loaded into the `rdi` register. Is the value of rdi (after this instruction is executed) a memory address or string literal? (Hint: how many letters in the string?)
+A5) ______ _______
+

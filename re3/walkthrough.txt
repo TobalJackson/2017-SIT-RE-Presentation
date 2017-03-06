@@ -1,0 +1,83 @@
+------======[[       OPTIONAL       ]]======------
+Try this challenge without looking at the source code. If at any point you feel confused about what's happening (especially when looking at the `validateInput()` disassembly) feel free to `cat control1.c` to see the source.
+
+For this challenge, making use of the rarun2 debug profile is optional, however without it, you'll have to specify what argument(s) you'd like to supply to the binary after opening it in r2 using `:ood <arg1>`
+
+If you do use the `rr2` file as explained below, you can change your `arg1` value by simply editing and replacing "asdf" with whatever argument you want.
+
+To use the `control1.rr2` file, simply open a secondary terminal window and use `tty` to get its pts/pty number, and replace the one in the `control1.rr2` file.  After that, run `clear; sleep 99999999999;` in that secondary terminal, and finally run `r2 -d rarun2 -R ./control1.rr2` in your primary terminal.
+Now radare's input/output is tied to your primary terminal, and the debugged program's input/output are tied to the secondary terminal.
+
+------======[[BEFORE RUNNING RADARE2]]======------
+
+1) Try running the program once with no arguments: `./control1` and see what it tells you.
+2) Try running it again with one argument: `./control asdf` and see what it tells you.
+
+------======[[      WALKTHROUGH     ]]======------
+
+1) Open the file as above, or using `r2 -d ./control1` (note that, as explained above, using this method requires the use of `:ood <arg1>` to specify an argument [if you'd like])
+2) Use `aaa` to analyze the functions and references.
+3) Use `V` to switch to visual mode, followed by `pp` to get to the debug view.
+4) Use `:db main; dc` to debug-continue-until the main function.
+5) Press `<enter>` to leave command mode
+6) Press `sssss` (5 times) to step past the function prologue until you're at instruction 0x40067a.
+
+7) Answer Question 1.
+
+8) The instructions at 0x40067a and 0x40067e together represent a control-flow sequence. `cmp` is "compare", and `jg` is "jump if greater than".  Use `s` to step and watch the `rflags` register change (or not) when you `s`tep over the `cmp` instruction. 
+	The arrow to the left of instruction 0x40067e shows where a jump will take the instruction pointer based on some condition.  
+	(Hint: use `:ood` to relaunch the program with no arguments [or delete the `arg1` line from the control1.rr2 file] to see how the compare-then-jump responds).
+
+9) Answer questions 2 and 3.
+
+10) At this point, make sure you've supplied arg1 to the program somehow, and `s`tep execution to get the instruction pointer (`rip`) to 0x4006a2. Notice how with 2 arguments that `rip` "jumps" from  0x40067e to 0x400694.
+
+11) Before stepping into `sym.validateInput`, look at the preceding 4 instructions. 
+	
+	Answer question 4.
+	
+12) Use `s` to step-into sym.validateInput. Sometimes radare's analysis misses things when run before `main()` is entered.  Run `aaa` again here.
+13) Notice how radare's analysis has recognized and added local function variables `rbp-0x28`, and `rbp-0x14` (shown at the top of the disassembled function, as radare flags/comments `; var int local_28h @ rbp-0x28`).  
+
+14) Use `ssss` (4 steps) to step over the function prologue, and see how these two variables are now going to be filled in, one with `rdi` and the other with `0`. So that it's easier to keep track of these variables, let's rename them.  
+	Use `:afvb -0x28 arg1 char*` to rename `rbp-0x28` to arg1 of type *char
+	Use `:afvb -0x14 loop_counter int` to rename `rbp-0x14` to loop_counter of type int
+	Use `:<enter>` to exit command mode
+	
+	Notice how after renaming all references to these local stack variables are renamed within this function's disassembly!
+	Notice how the instruction immediately after initializing the loop counter (0x4005ea) is an unconditional jump! 
+
+15) Use `S` (capital S) to Step Over all calls (really only necessary for instruction at 0x40064f, `call strlen`) after the jump until `rip` is at 0x400657. Look intently at instructions 0x400642 through 0x400657 and Answer question 5.
+
+16) Use `s` to step and follow the conditional jump back up to 0x4005ec.  Once here, step six times until `rip` == 0x4005fe.
+
+17) Answer questions 6 and 7.
+
+18) Without advancing execution, look at the assembly instructions starting at 0x400600, the instruction after the conditional jump (not taken).  This and the next 4 instructions are the same as above, however the comparison and jump (at 0x400610 and 0x400628) are both different.  After staring at and grokking these instructions, answer questions 8 & 9.
+
+19) Step through this second compare, until your `rip` == 0x400612. Will your `rip` follow the jump to success, or continue to failure?  Single step one instruction to see.  If you end up in the failure block, don't worry, we'll set a breakpoint here and relaunch the program. Press `c` to enter cursor mode, and press `<tab>` twice to get the cursor into the disassembly pane.
+
+20)	Once here, use the `j` key (or down arrow key) to move the cursor down until it's on instruction 0x400612. Notice how the cursor highlights the jump targets when it passes over the jmp instructions.  Once on the correct instruction address (the cursor should be on the `7e`) press `b` to set a breakpoint. If you've gone too far, just use `k` (or up arrow) to get back to the correct location.  If you've moved left or right, use the `h` or `l` keys (or left/right arrow keys) to get the cursor to the first opcode byte of the instruction. 
+	
+21) Once you've set the breakpoint, use `c` to exit cursor mode.
+	If you used the rarun2 `.rr2` profile to launch the program, edit it now to change the `arg1` argument to something that will pass these checks, making sure to save the file.
+	If you used the simpler command line invocation ('r2 -d challenge1'), then simply use `:ood <newArgument>` to specify a new argument that will pass these checks to pass to the program and reopen it in radare2.
+
+22) Once radare2 has reopened, use `:db` to list your breakpoints, and `:dc` to continue to the one we just set. You may have to run `:dc` two or more times depending on how many breakpoints you've set.
+
+23) Now that we're back at this jump instruction, we have input which will take us to the success routine (right? - If not, take a look at questions 7, 8, and 9 and potentially their answers to get the required information). Following the jump with a `s`tep, we end up at 0x400628.  Single step 5 times so that `rip` == 0x400639, taking as much time as you need to see exactly what is happening with each instruction.
+
+24) If you're not using the rarun2 `rr2` file, use `:? rax` to see the decoded ASCII value that the `call putchar` will print out.  Otherwise, `S`tep over the `call putchar` function to see the first character of the flag print out. 
+
+25) Answer question 10.
+
+------======[[CONGRATULATIONS]]======------
+
+1) Now you should understand how this program works (without ever having looked at the source code right?) and should be able to run it again with the correct argument to have the flag display!
+2) Hopefully you've learned a bit more about how to work in radare2 and get arguments and such renamed for a more understandable workflow.  Recognizing high-level constructs such as if statements and for loops is a very handy skill when it comes to reversing!
+3) In the next exercise, the flag is no longer hidden in plain sight, and the source code is unavailable!  Can you reverse the program and find the flag?
+	
+
+
+
+

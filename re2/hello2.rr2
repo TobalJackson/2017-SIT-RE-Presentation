@@ -1,0 +1,3 @@
+#!/usr/bin/env rarun2
+program=hello2
+stdio=/dev/pts/3

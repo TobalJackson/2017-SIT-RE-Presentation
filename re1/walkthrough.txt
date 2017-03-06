@@ -1,0 +1,34 @@
+------======[[       OPTIONAL       ]]======------
+
+For this challenge, making use of the rarun2 debug profile is optional, however good practice if you'd like to see the program's output while debugging.
+
+Simply open a secondary terminal window and use `tty` to get its pts/pty number, and replace the one in the `hello.rr2` file.  After that, run `clear; sleep 99999999999;` in that secondary terminal, and finally run `r2 -d rarun2 -R ./hello.rr2` in your primary terminal.  
+Now radare's input/output is tied to your primary terminal, and the debugged program's input/output are tied to the secondary terminal.
+
+------======[[BEFORE RUNNING RADARE2]]======------
+
+1) Use `cat hello.c` to view the source code of the binary.
+2) Keep in mind we're only going to be looking at main(), and not into the printf() function, which is a libc shared library function, and much more complicated.
+
+------======[[      WALKTHROUGH     ]]======------
+
+1)	Type `r2 -d ./hello` at the terminal prompt to open the binary with radare2 in debug mode.
+2)	Type `aaa` to have radare2 analyze the binary for you.
+3)	Use `V` to switch to Visual mode, followed by `pp` to toggle to debug view.
+4)	Use `:db main` to set a breakpoint at main.
+5)	Use `:dc` to continue execution until the breakpoint.
+6)	Press <enter> to leave command mode, returning to Visual Mode.
+
+7)	Answer question 1.
+
+8)	Press `s` to step execution once, so that `rip` is now 0x400547, and notice the stack word @ `rsp`s address change.
+
+9)	Answer questions 2 and 3.
+
+10)	Press `s` to step execution again, so that `rip` == 0x40054a, and answer question 4.
+11) press `s` to step execution again, so that `rip` == 0x40054f, and answer question 5.
+
+------======[[CONGRATULATIONS]]======------
+
+1) You've reached the end of this first exercise!  Hopefully you've learned a bit about registers and the stack from seeing a simple "Hello, world!" program in motion under radare2.
+2) In the next exercise, you'll see how a string pointer gets passed to another function, as well as learn a little bit about where global variables are stored!

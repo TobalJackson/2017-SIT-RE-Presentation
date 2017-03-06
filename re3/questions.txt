@@ -1,0 +1,25 @@
+Q1) In C programming, the main() function can optionally take two arguments, `int argc` and `char* argv[]`, which refer to the argument count, and array of arg string pointers respectively. At instructions 0x400673 and 0x400676, these arguments are being placed in main's local stack frame.  What values do each of these registers hold?
+(Hint: use `:pxq @ [rsi]` to dereference rsi before printing)
+A1)
+
+Q2) At instruction 0x40067e, the `jg` instruction stands for "jump if greater", and it relies upon the "zero flag" which can be set in the `rflags` register by the `cmp` instruction. Look at the block of instructions from 0x400680 - 0x40068f to see what is skipped over if this condition holds true. What lines of C code could the instructions at 0x40067e - 0x40068f represent? (Hint: How do you check for supplied args when writing a c program?)
+A2)
+
+Q3) What simple, single arithmetic operation can be performed on varibles A and B to check for: 1) equality, 2) if A is less than B, and 3) if A is greater than B? (This is how the `cmp` instruction works.  It sets various flags based on the output of this operation, including the `Z`ero flag).
+A3) ___________
+
+Q4) Look at the instructions at 0x400694 - 0x40069f.  What is happening here? (Hint: the validateInput takes a string pointer as an argument)
+A4)
+
+Q5) In the disassembly of the validateInput() function, after following the unconditional jump at 0x4005ea, look hard at the instructions at 0x400642 through 0x400657. Taking into account the instruction before the jump along with these, what control flow structure is likely being employed here? (Hint: if you can't figure it out, look at the source code at line #9).
+A5) 
+
+Q6) At instruction 0x4005fe, there is a conditional `jle` "jump if less than or equal" instruction that depends on the `cmp` instruction made just before.  The arguments of the compare are a constant, 0x40, and `al` (the lowest byte of the `rax` register).  Where did this value in `al` come from? How is `rdx` in the instruction at 0x4005f6 used?
+
+Q7) At instruction 0x4005fc, what happens if the character value (in `al`) is less than or equal to 0x40?
+
+Q8) At instruction 0x400610, What happens if the character value (in `al`) is less than or equal to 0x5a?
+
+Q9) Together, the comparisons made at the above two addresses impose a restriction on what Successful input for the program is.  What is it? (Hint: use `man ascii` in another terminal window)
+
+Q10) What is the instruction at 0x40063e used for?

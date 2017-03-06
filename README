@@ -1,0 +1,18 @@
+Hello and welcome to this introduction to reverse engineering and radare2.  This repository is meant to supply the information (in presentation form and supplied external resources) necessary for one to get started with reverse engineering.  This is still currently a work in progress, however the content as it stands is viable for anyone to get starte with reverse engineering, and to learn how to use radare2.
+
+I'd like to thank Grant Hernandez (https://twitter.com/digital_cold) for introducing me to radare2 as well as providing some content for the presentation, as well as the radare2 team (https://rada.re/r/) for coming up with such a great tool.
+
+Before starting radare2 it'll make your life easier to set up your "~/.radare2rc" file as described in the presentation, although this isn't necessary. I've also put together a slimmed-down and more up-to-date cheat sheet which can be found here: https://docs.google.com/document/d/1our_fcFcufIJ13QsZoDuGOEBqftF6o0zEkDsqzAy43U/edit
+
+As for how to use this repository, take a look at the presentation first to see if there's anything in it you didn't already know, and then take a look at the "re#" folders for exercises and challenges designed to guide your understanding of reverse engineering as a process as well as how to use radare2.
+
+Within each "re#" folder there is an ELF binary compiled from a C source file of the same name.  The first two folders are not set up in challenge format, and thus do not have flags to obtain.  They are designed to familiarize one with assembly and a radare2 workflow.  The second two are more like CTF challenges (albeit simple ones) which serve to illustrate how high-level C constructs translate to assembly.  These second two also introduce more complex radare2 commands which hopefully provide more insight into how flexible radare2 really is.
+
+Each of the folders comes with a set of questions and answers, and a walkthrough.  My original intent was for the walkthrough to be the "solution" for the challenge, but for these early challenges ("hello", "hello2") the walkthrough serves more as an guide through the program's assembly and radare2 commands.  The questions are there to check your understanding of what is happening in the assembly, and the answers are, of course, there to see if you were right ;).
+
+Early on, most of the files are sitting in the same folder as the binary itself, but in later stages I've placed one or more of the files in ".zip" archives to dissuade you from looking at them too quickly, and rather to try a little harder before looking at the answers/solution.  
+
+If you've only the PDF version of the slides, make sure to check out the last two pages for references and notes about each slide's topics.  The notes are also available on the presentation slides at https://docs.google.com/presentation/d/1vJWsVZnpD25jqLQWeLvDXZSD2MMM5_tyBAqfWnaIx-c/edit?usp=sharing .
+
+Please don't hesitate to contact me at tobaljackson@binarystud.io with any questions, comments, or suggestions about any of this!  I hope you enjoy this as much as I have in making it, and wish you luck on your road to understanding.  Happy hacking!
+

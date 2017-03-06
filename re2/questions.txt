@@ -1,0 +1,17 @@
+Q1) After executing the instruction at 0x40056f, how big is the stack? (Hint: subtract the stack pointer from the base pointer `:? rbp-rsp`)
+A1) __ bytes (remember hexadecimal numbers != decimal numbers!)
+
+Q2) With the instruction pointer at 0x40058e, what value will be placed into the `rax` register after this instruction executes? (Hint: `lea` stands for 'load effective address', and `local_10h` is just a label for the hex value `0x10`). Followup: what data is at this address on the stack? 
+A2) 
+
+Q3) The `puts` system call expects a pointer to a string as an argument.  Look at the instructions at 0x40058e and 0x400592; what register is the string pointer placed in before calling puts? (Hint: look at Slide 0x32 to see function/syscall calling convention)
+A3) r__
+
+Q4) In the `print_something` function, looking at the instructions at 0x40054e, 0x400552, and 0x400556, it seems redundant to shuffle the string pointer around like this only to end back up where it started.  What is a possible reason for placing the string pointer on the local stack frame (rbp-0x8) before calling puts at 0x400559?
+A4) 
+
+Q5) Looking at instruction 0x40055e, what address is `str.Something_Else_` located at? (Hint: use `:? str.Something_Else_` or step past this instruction to see it in `rdi`)
+A5) 0x______
+
+Q6) What section of the mapped memory is this string located in? (Hint: use `:iS` to view program sections, looking for a `vaddr=` value less than the string's address)
+A6) .____

@@ -1,0 +1,5 @@
+#!/usr/bin/env rarun2
+program=control1
+arg0="./control1"
+arg1="asdf"
+stdio=/dev/pts/2
