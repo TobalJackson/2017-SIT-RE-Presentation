@@ -5,7 +5,7 @@ For this challenge, making use of the rarun2 debug profile is optional, however 
 
 If you do use the `rr2` file as explained below, you can change your `arg1` value by simply editing and replacing "asdf" with whatever argument you want.
 
-To use the `control1.rr2` file, simply open a secondary terminal window and use `tty` to get its pts/pty number, and replace the one in the `control1.rr2` file.  After that, run `clear; sleep 99999999999;` in that secondary terminal, and finally run `r2 -d rarun2 -R ./control1.rr2` in your primary terminal.
+To use the `control1.rr2` file, simply open a secondary terminal window and use `tty` to get its pts/pty number, and replace the one in the `control1.rr2` file.  After that, run `clear; sleep 99999999999;` in that secondary terminal, and finally run `r2 -r ./control1.rr2` in your primary terminal.
 Now radare's input/output is tied to your primary terminal, and the debugged program's input/output are tied to the secondary terminal.
 
 ------======[[BEFORE RUNNING RADARE2]]======------
