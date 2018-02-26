@@ -2,7 +2,7 @@
 
 For this challenge, making use of the rarun2 debug profile is optional, however good practice if you'd like to see the program's output while debugging.
 
-Simply open a secondary terminal window and use `tty` to get its pts/pty number, and replace the one in the `hello2.rr2` file.  After that, run `clear; sleep 99999999999;` in that secondary terminal, and finally run `r2 -d rarun2 -R ./hello2.rr2` in your primary terminal.  
+Simply open a secondary terminal window and use `tty` to get its pts/pty number, and replace the one in the `hello2.rr2` file.  After that, run `clear; sleep 99999999999;` in that secondary terminal, and finally run `r2 -r ./hello2.rr2` in your primary terminal.  
 Now radare's input/output is tied to your primary terminal, and the debugged program's input/output are tied to the secondary terminal.
 
 ------======[[BEFORE RUNNING RADARE2]]======------
